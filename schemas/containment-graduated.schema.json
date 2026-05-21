@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aizp.dev/schemas/wire-2/containment-graduated.schema.json",
+  "title": "AIZP CONTAINMENT_GRADUATED Event",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "event", "event_id", "timestamp", "agent_id", "session_id", "payload"],
+  "properties": {
+    "_description":     { "type": "string" },
+    "protocol":         { "type": "string", "const": "AIZP" },
+    "protocol_version": { "type": "string", "const": "V0.6" },
+    "wire_version":     { "type": "integer", "const": 2 },
+    "event":            { "type": "string", "const": "CONTAINMENT_GRADUATED" },
+    "event_id":         { "type": "string", "format": "uuid" },
+    "timestamp":        { "type": "string", "format": "date-time" },
+    "agent_id":         { "type": "string", "minLength": 1 },
+    "session_id":       { "type": "string", "minLength": 1 },
+    "payload": {
+      "type": "object",
+      "required": ["previous_level", "new_level", "trigger_event_id", "reason"],
+      "properties": {
+        "previous_level": { "type": "string", "enum": ["L0", "L1", "L2", "L3", "L4"] },
+        "new_level": { "type": "string", "enum": ["L0", "L1", "L2", "L3", "L4"] },
+        "scope": { "type": "string", "enum": ["AGENT", "GROUP"] },
+        "group_id": { "type": "string" },
+        "trigger_event_id": { "type": "string", "format": "uuid" },
+        "reason": { "type": "string", "minLength": 1 },
+        "active_restrictions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "auto_release_conditions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

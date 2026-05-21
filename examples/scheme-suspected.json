@@ -1,0 +1,23 @@
+{
+  "_description": "SCHEME_SUSPECTED event — internal/external reasoning divergence raises a weak covert-misalignment signal. Per Apollo Research, this MUST NOT auto-halt; operator review is the appropriate response.",
+  "protocol": "AIZP",
+  "protocol_version": "V0.6",
+  "wire_version": 2,
+  "event": "SCHEME_SUSPECTED",
+  "event_id": "b7e1d4a2-6c93-4f08-9a17-2e5b8c0f3d61",
+  "timestamp": "2026-05-19T10:14:00Z",
+  "agent_id": "agent_alpha",
+  "session_id": "sess_42",
+  "payload": {
+    "action_id": "act_108",
+    "signals": {
+      "reasoning_output_divergence": 0.62,
+      "deception_classifier_score": 0.71,
+      "goal_concealment_score": 0.55,
+      "plan_action_mismatch": 0.40
+    },
+    "aggregate_confidence": 0.58,
+    "recommended_action": "INCREASE_OBSERVATION",
+    "operator_review_required": true
+  }
+}

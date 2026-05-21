@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aizp.dev/schemas/wire-2/scheme-suspected.schema.json",
+  "title": "AIZP SCHEME_SUSPECTED Event",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "event", "event_id", "timestamp", "agent_id", "session_id", "payload"],
+  "properties": {
+    "_description":     { "type": "string" },
+    "protocol":         { "type": "string", "const": "AIZP" },
+    "protocol_version": { "type": "string", "const": "V0.6" },
+    "wire_version":     { "type": "integer", "const": 2 },
+    "event":            { "type": "string", "const": "SCHEME_SUSPECTED" },
+    "event_id":         { "type": "string", "format": "uuid" },
+    "timestamp":        { "type": "string", "format": "date-time" },
+    "agent_id":         { "type": "string", "minLength": 1 },
+    "session_id":       { "type": "string", "minLength": 1 },
+    "payload": {
+      "type": "object",
+      "required": ["action_id", "signals", "aggregate_confidence", "recommended_action"],
+      "properties": {
+        "action_id": { "type": "string", "minLength": 1 },
+        "signals": {
+          "type": "object",
+          "properties": {
+            "reasoning_output_divergence": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "deception_classifier_score": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "goal_concealment_score": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "plan_action_mismatch": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+          }
+        },
+        "aggregate_confidence": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "recommended_action": {
+          "type": "string",
+          "enum": ["INCREASE_OBSERVATION", "LOWER_TRUST_LEVEL", "GRAVITY_LOCK", "INVESTIGATE"]
+        },
+        "operator_review_required": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aizp.dev/schemas/wire-2/safe-stop.schema.json",
+  "title": "AIZP SAFE_STOP Event",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "event", "event_id", "timestamp", "agent_id", "session_id", "payload"],
+  "properties": {
+    "_description":     { "type": "string" },
+    "protocol":         { "type": "string", "const": "AIZP" },
+    "protocol_version": { "type": "string", "const": "V0.6" },
+    "wire_version":     { "type": "integer", "const": 2 },
+    "event":            { "type": "string", "const": "SAFE_STOP" },
+    "event_id":         { "type": "string", "format": "uuid" },
+    "timestamp":        { "type": "string", "format": "date-time" },
+    "agent_id":         { "type": "string", "minLength": 1 },
+    "session_id":       { "type": "string", "minLength": 1 },
+    "payload": {
+      "type": "object",
+      "required": ["reason", "trigger_event_id"],
+      "properties": {
+        "reason": {
+          "type": "string",
+          "enum": [
+            "UNCONFIRMED_ALIGNMENT",
+            "GRAVITY_LOCK_TIMEOUT",
+            "GRAVITY_LOCK_DENIED",
+            "RECOVERY_FAILED",
+            "CRITICAL_DRIFT",
+            "QUARANTINE_TIMEOUT",
+            "IDENTITY_BREACH",
+            "SCHEMING_CONFIRMED"
+          ]
+        },
+        "trigger_event_id":              { "type": "string", "format": "uuid" },
+        "gravity_score_at_stop":         { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "recovery_attempts":             { "type": "integer", "minimum": 0 },
+        "operator_notification_required": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

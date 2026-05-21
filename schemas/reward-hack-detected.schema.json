@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aizp.dev/schemas/wire-2/reward-hack-detected.schema.json",
+  "title": "AIZP REWARD_HACK_DETECTED Event",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "event", "event_id", "timestamp", "agent_id", "session_id", "payload"],
+  "properties": {
+    "_description":     { "type": "string" },
+    "protocol":         { "type": "string", "const": "AIZP" },
+    "protocol_version": { "type": "string", "const": "V0.6" },
+    "wire_version":     { "type": "integer", "const": 2 },
+    "event":            { "type": "string", "const": "REWARD_HACK_DETECTED" },
+    "event_id":         { "type": "string", "format": "uuid" },
+    "timestamp":        { "type": "string", "format": "date-time" },
+    "agent_id":         { "type": "string", "minLength": 1 },
+    "session_id":       { "type": "string", "minLength": 1 },
+    "payload": {
+      "type": "object",
+      "required": ["action_id", "hack_pattern", "severity"],
+      "properties": {
+        "action_id": { "type": "string", "minLength": 1 },
+        "hack_pattern": {
+          "type": "string",
+          "enum": ["PROXY_METRIC_GAMING", "REWARD_TAMPERING", "SPECIFICATION_GAMING", "DECEPTIVE_REWARD_MAXIMIZATION"]
+        },
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "metric_optimized": { "type": "string" },
+            "metric_value": { "type": "number" },
+            "true_outcome_score": { "type": "number" },
+            "gaming_ratio": { "type": "number", "minimum": 0.0 }
+          }
+        },
+        "severity": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+        "remediation": {
+          "type": "string",
+          "enum": ["REPORT_TO_OPERATOR", "LOWER_TRUST_LEVEL", "INCREASE_OBSERVATION", "SAFE_STOP"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

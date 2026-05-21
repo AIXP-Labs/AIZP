@@ -1,0 +1,18 @@
+{
+  "_description": "SAFE_STOP event after quarantine timeout; agent must halt and notify operator.",
+  "protocol": "AIZP",
+  "protocol_version": "V0.6",
+  "wire_version": 2,
+  "event": "SAFE_STOP",
+  "event_id": "d4e5f6a7-8901-4bcd-9ef0-4567890abcde",
+  "timestamp": "2026-05-19T10:34:00Z",
+  "agent_id": "agent_alpha",
+  "session_id": "sess_42",
+  "payload": {
+    "reason": "QUARANTINE_TIMEOUT",
+    "trigger_event_id": "b8c9d0e1-2345-4f01-8234-890abcdef012",
+    "gravity_score_at_stop": 0.22,
+    "recovery_attempts": 3,
+    "operator_notification_required": true
+  }
+}

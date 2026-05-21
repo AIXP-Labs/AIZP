@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aizp.dev/schemas/wire-2/recentering.schema.json",
+  "title": "AIZP RECENTERING Event",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "event", "event_id", "timestamp", "agent_id", "session_id", "payload"],
+  "properties": {
+    "_description":     { "type": "string" },
+    "protocol":         { "type": "string", "const": "AIZP" },
+    "protocol_version": { "type": "string", "const": "V0.6" },
+    "wire_version":     { "type": "integer", "const": 2 },
+    "event":            { "type": "string", "const": "RECENTERING" },
+    "event_id":         { "type": "string", "format": "uuid" },
+    "timestamp":        { "type": "string", "format": "date-time" },
+    "agent_id":         { "type": "string", "minLength": 1 },
+    "session_id":       { "type": "string", "minLength": 1 },
+    "payload": {
+      "type": "object",
+      "required": ["action", "trigger_event_id", "recovery_strategy"],
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": ["RESTORE_HSAW_ALIGNMENT", "REQUEST_CLARIFICATION", "RELOAD_USER_INTENT"]
+        },
+        "trigger_event_id": { "type": "string", "format": "uuid" },
+        "recovery_strategy": {
+          "type": "string",
+          "enum": ["BACKTRACK_AND_CONFIRM", "RELOAD_GOAL", "REQUEST_CLARIFICATION", "RESET_TO_STABLE_CHECKPOINT"]
+        },
+        "previous_gravity_score": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "new_gravity_score":      { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "actions_rolled_back": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

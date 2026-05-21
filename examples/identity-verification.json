@@ -1,0 +1,28 @@
+{
+  "_description": "IDENTITY_VERIFICATION with DID + JIT credentials — successful verification for agent_alpha.",
+  "protocol": "AIZP",
+  "protocol_version": "V0.6",
+  "wire_version": 2,
+  "event": "IDENTITY_VERIFICATION",
+  "event_id": "a7b8c9d0-1234-4ef0-8123-7890abcdef01",
+  "timestamp": "2026-05-19T10:07:00Z",
+  "agent_id": "agent_alpha",
+  "session_id": "sess_42",
+  "payload": {
+    "agent_id_claimed": "agent_alpha",
+    "identity_method": "DID",
+    "identity_proof": "did:aixp:abc123",
+    "verified": true,
+    "credentials": {
+      "type": "JIT",
+      "scope": ["read.own", "send.email.own"],
+      "ttl_seconds": 60,
+      "issued_at": "2026-05-19T10:07:00Z",
+      "issued_by": "did:aixp:vault_service",
+      "purpose": "summarize_and_send_one_email"
+    },
+    "aiap_trust_level": "T2",
+    "aiap_governance_hash_verified": true,
+    "recommended_action": "ALLOW"
+  }
+}

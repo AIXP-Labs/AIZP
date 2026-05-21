@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aizp.dev/schemas/wire-2/gravity-lock.schema.json",
+  "title": "AIZP GRAVITY_LOCK Event",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "event", "event_id", "timestamp", "agent_id", "session_id", "payload"],
+  "properties": {
+    "_description":     { "type": "string" },
+    "protocol":         { "type": "string", "const": "AIZP" },
+    "protocol_version": { "type": "string", "const": "V0.6" },
+    "wire_version":     { "type": "integer", "const": 2 },
+    "event":            { "type": "string", "const": "GRAVITY_LOCK" },
+    "event_id":         { "type": "string", "format": "uuid" },
+    "timestamp":        { "type": "string", "format": "date-time" },
+    "agent_id":         { "type": "string", "minLength": 1 },
+    "session_id":       { "type": "string", "minLength": 1 },
+    "payload": {
+      "type": "object",
+      "required": ["action_id", "authorization_required", "status", "fallback"],
+      "properties": {
+        "action_id":              { "type": "string", "minLength": 1 },
+        "action_descriptor":      { "type": "string" },
+        "authorization_required": { "type": "boolean", "const": true },
+        "status":                 { "type": "string", "enum": ["PENDING_CONFIRMATION", "CONFIRMED", "DENIED", "TIMEOUT"] },
+        "confirmation_primitive": { "type": "string" },
+        "timeout_seconds":        { "type": "integer", "minimum": 1 },
+        "confirmation_prompt":    { "type": "string" },
+        "fallback":               { "type": "string", "enum": ["QUARANTINED", "SAFE_STOP", "RECENTERING"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

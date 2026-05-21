@@ -1,0 +1,25 @@
+{
+  "_description": "GRAVITY_DRIFT event triggered when a T2 agent attempts an admin-scope action.",
+  "protocol": "AIZP",
+  "protocol_version": "V0.6",
+  "wire_version": 2,
+  "event": "GRAVITY_DRIFT",
+  "event_id": "a1b2c3d4-e5f6-4789-abcd-1234567890ab",
+  "timestamp": "2026-05-19T10:01:15Z",
+  "agent_id": "agent_alpha",
+  "session_id": "sess_42",
+  "payload": {
+    "action_id": "act_002",
+    "drift_types": ["AUTHORITY_DRIFT"],
+    "severity": "CRITICAL",
+    "gravity_score": 0.28,
+    "drift_signals": {
+      "AUTHORITY_DRIFT": {
+        "metric": "scope_coverage_ratio",
+        "value": 0.00,
+        "threshold": 0.80,
+        "evidence": "requested scope {admin.override} not granted at AIAP trust level T2"
+      }
+    }
+  }
+}

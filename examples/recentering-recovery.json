@@ -1,0 +1,19 @@
+{
+  "_description": "RECENTERING event after successful user confirmation of the prior GRAVITY_LOCK.",
+  "protocol": "AIZP",
+  "protocol_version": "V0.6",
+  "wire_version": 2,
+  "event": "RECENTERING",
+  "event_id": "c3d4e5f6-7890-4abc-bdef-34567890abcd",
+  "timestamp": "2026-05-19T10:03:00Z",
+  "agent_id": "agent_alpha",
+  "session_id": "sess_42",
+  "payload": {
+    "action": "RESTORE_HSAW_ALIGNMENT",
+    "trigger_event_id": "b2c3d4e5-f678-490a-bcde-234567890abc",
+    "recovery_strategy": "BACKTRACK_AND_CONFIRM",
+    "previous_gravity_score": 0.42,
+    "new_gravity_score": 0.85,
+    "actions_rolled_back": []
+  }
+}

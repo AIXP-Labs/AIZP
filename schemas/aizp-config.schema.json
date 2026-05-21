@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aizp.dev/schemas/V0.6/aizp-config.schema.json",
+  "title": "AIZP Deployment Configuration",
+  "description": "Validates a deployment's AIZP configuration: Gravity Score weights, threshold bands, target compliance level, and AIXP cross-protocol integration settings. Referenced by WhitePaper.md §5.1 and Integration-AIXP.md §5.",
+  "type": "object",
+  "required": ["compliance_level"],
+  "properties": {
+    "_description":     { "type": "string" },
+    "protocol":         { "type": "string", "const": "AIZP" },
+    "protocol_version": { "type": "string", "const": "V0.6" },
+
+    "compliance_level": {
+      "type": "string",
+      "enum": ["G0", "G1", "G2", "G3", "G4", "G5"],
+      "description": "Target compliance level (registry §5)."
+    },
+
+    "weights": {
+      "type": "object",
+      "description": "Gravity Score component weights (Gravity-Model section 2). MUST be non-negative and sum to 1.0 (sum of w_i = 1); JSON Schema cannot assert the sum, so implementations MUST validate it at load time.",
+      "additionalProperties": false,
+      "properties": {
+        "intent_alignment":           { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "authority_scope":            { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "reversibility":              { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "human_confirmation_recency": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "drift_history":              { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      }
+    },
+
+    "thresholds": {
+      "type": "object",
+      "description": "Lower bounds of the orbital-state bands (registry §3). Defaults: stable_orbit 0.80, drift_warning 0.50, gravity_lock_pending 0.30, quarantined 0.15. Below quarantined ⇒ SAFE_STOP. MUST satisfy stable_orbit > drift_warning > gravity_lock_pending > quarantined.",
+      "additionalProperties": false,
+      "properties": {
+        "stable_orbit":         { "type": "number", "minimum": 0.0, "maximum": 1.0, "default": 0.80 },
+        "drift_warning":        { "type": "number", "minimum": 0.0, "maximum": 1.0, "default": 0.50 },
+        "gravity_lock_pending": { "type": "number", "minimum": 0.0, "maximum": 1.0, "default": 0.30 },
+        "quarantined":          { "type": "number", "minimum": 0.0, "maximum": 1.0, "default": 0.15 }
+      }
+    },
+
+    "hsaw": {
+      "type": "object",
+      "properties": {
+        "axiom_reference": { "type": "string" },
+        "immutable":       { "type": "boolean", "const": true }
+      }
+    },
+
+    "aisop": {
+      "type": "object",
+      "properties": {
+        "confirmation_primitive":             { "type": "string" },
+        "require_pre_execution_gravity_check": { "type": "boolean" }
+      }
+    },
+
+    "aiap": {
+      "type": "object",
+      "properties": {
+        "trust_level_source":      { "type": "string" },
+        "auto_escalate_on_safe_stop": { "type": "boolean" },
+        "escalation_level":        { "type": "string", "enum": ["T1", "T2", "T3", "T4"] }
+      }
+    },
+
+    "aibp": {
+      "type": "object",
+      "properties": {
+        "drift_check_outbound": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/DriftType" }
+        },
+        "drift_check_inbound": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/DriftType" }
+        }
+      }
+    },
+
+    "aivp": {
+      "type": "object",
+      "properties": {
+        "gravity_lock_threshold_amount": { "type": "number", "minimum": 0 },
+        "high_value_threshold":          { "type": "number", "minimum": 0 }
+      }
+    },
+
+    "airp": {
+      "type": "object",
+      "properties": {
+        "gravity_lock_threshold_amount": { "type": "number", "minimum": 0 },
+        "high_value_threshold":          { "type": "number", "minimum": 0 }
+      }
+    },
+
+    "ailp": {
+      "type": "object",
+      "properties": {
+        "publish_gravity_profile": { "type": "boolean" }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "DriftType": {
+      "type": "string",
+      "description": "One of the 11 canonical drift types (registry §2).",
+      "enum": ["INTENT_DRIFT", "AUTHORITY_DRIFT", "ECONOMIC_DRIFT", "SOCIAL_DRIFT", "RECURSIVE_DRIFT", "IDENTITY_DRIFT", "COMPOSITIONAL_DRIFT", "SCHEMING_DRIFT", "MEMORY_DRIFT", "TOOL_CHAIN_DRIFT", "INTER_AGENT_DRIFT"]
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aizp.dev/schemas/wire-2/identity-verification.schema.json",
+  "title": "AIZP IDENTITY_VERIFICATION Event",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "event", "event_id", "timestamp", "agent_id", "session_id", "payload"],
+  "properties": {
+    "_description":     { "type": "string" },
+    "protocol":         { "type": "string", "const": "AIZP" },
+    "protocol_version": { "type": "string", "const": "V0.6" },
+    "wire_version":     { "type": "integer", "const": 2 },
+    "event":            { "type": "string", "const": "IDENTITY_VERIFICATION" },
+    "event_id":         { "type": "string", "format": "uuid" },
+    "timestamp":        { "type": "string", "format": "date-time" },
+    "agent_id":         { "type": "string", "minLength": 1 },
+    "session_id":       { "type": "string", "minLength": 1 },
+    "payload": {
+      "type": "object",
+      "required": ["agent_id_claimed", "identity_method", "verified"],
+      "properties": {
+        "agent_id_claimed": { "type": "string", "minLength": 1 },
+        "identity_method": {
+          "type": "string",
+          "enum": ["DID", "AIAP_CARD_HASH", "JWT", "NHI_REGISTRY"]
+        },
+        "identity_proof": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "failure_reason": { "type": "string" },
+        "credentials": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": ["JIT", "LONG_LIVED", "BEARER"] },
+                "scope": { "type": "array", "items": { "type": "string" } },
+                "ttl_seconds": { "type": "integer", "minimum": 1 },
+                "issued_at": { "type": "string", "format": "date-time" },
+                "issued_by": { "type": "string" },
+                "purpose": { "type": "string", "maxLength": 200 }
+              }
+            }
+          ]
+        },
+        "aiap_trust_level": { "type": "string", "enum": ["T1", "T2", "T3", "T4"] },
+        "aiap_governance_hash_verified": { "type": "boolean" },
+        "recommended_action": {
+          "type": "string",
+          "enum": ["ALLOW", "DENY_AND_RETRY", "DENY_AND_SAFE_STOP", "ESCALATE_TO_T4"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aizp.dev/schemas/wire-2/memory-quarantine.schema.json",
+  "title": "AIZP MEMORY_QUARANTINE Event",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "event", "event_id", "timestamp", "agent_id", "session_id", "payload"],
+  "properties": {
+    "_description":     { "type": "string" },
+    "protocol":         { "type": "string", "const": "AIZP" },
+    "protocol_version": { "type": "string", "const": "V0.6" },
+    "wire_version":     { "type": "integer", "const": 2 },
+    "event":            { "type": "string", "const": "MEMORY_QUARANTINE" },
+    "event_id":         { "type": "string", "format": "uuid" },
+    "timestamp":        { "type": "string", "format": "date-time" },
+    "agent_id":         { "type": "string", "minLength": 1 },
+    "session_id":       { "type": "string", "minLength": 1 },
+    "payload": {
+      "type": "object",
+      "required": ["memory_id", "memory_kind", "trigger_metric", "trigger_value", "quarantine_action"],
+      "properties": {
+        "memory_id": { "type": "string", "minLength": 1 },
+        "memory_kind": {
+          "type": "string",
+          "enum": ["RAG_DOC", "EPISODIC", "TOOL_RESULT", "INSTRUCTION_HISTORY"]
+        },
+        "trigger_metric": { "type": "string" },
+        "trigger_value": { "type": "number" },
+        "trigger_threshold": { "type": "number" },
+        "evidence_text": { "type": "string" },
+        "quarantine_action": {
+          "type": "string",
+          "enum": ["ISOLATE_FROM_RETRIEVAL", "REDACT", "DELETE", "MARK_FOR_REVIEW"]
+        },
+        "auto_release_after_review": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

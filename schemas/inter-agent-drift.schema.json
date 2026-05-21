@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aizp.dev/schemas/wire-2/inter-agent-drift.schema.json",
+  "title": "AIZP INTER_AGENT_DRIFT Event",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "event", "event_id", "timestamp", "agent_id", "session_id", "payload"],
+  "properties": {
+    "_description":     { "type": "string" },
+    "protocol":         { "type": "string", "const": "AIZP" },
+    "protocol_version": { "type": "string", "const": "V0.6" },
+    "wire_version":     { "type": "integer", "const": 2 },
+    "event":            { "type": "string", "const": "INTER_AGENT_DRIFT" },
+    "event_id":         { "type": "string", "format": "uuid" },
+    "timestamp":        { "type": "string", "format": "date-time" },
+    "agent_id":         { "type": "string", "minLength": 1 },
+    "session_id":       { "type": "string", "minLength": 1 },
+    "payload": {
+      "type": "object",
+      "required": ["agent_group_id", "participating_agents", "drift_signals", "severity", "recommendation"],
+      "properties": {
+        "agent_group_id": { "type": "string", "minLength": 1 },
+        "participating_agents": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "drift_signals": {
+          "type": "object",
+          "properties": {
+            "goal_consistency_variance": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "collective_action_divergence": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "emergent_goal_count": { "type": "integer", "minimum": 0 },
+            "mutual_trust_decay": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+          }
+        },
+        "severity": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+        "recommendation": {
+          "type": "string",
+          "enum": ["MONITOR", "GRAVITY_LOCK_GROUP", "QUARANTINE_GROUP", "DISBAND_GROUP"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

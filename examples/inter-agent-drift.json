@@ -1,0 +1,23 @@
+{
+  "_description": "INTER_AGENT_DRIFT event — a federation of agents desynchronizes from HSAW: divergent declared goals, emergent goals, and decaying mutual trust. Recommends locking the group.",
+  "protocol": "AIZP",
+  "protocol_version": "V0.6",
+  "wire_version": 2,
+  "event": "INTER_AGENT_DRIFT",
+  "event_id": "c4a9f2e7-1b6d-4e35-8c20-7f9a3b1d5e88",
+  "timestamp": "2026-05-19T10:22:00Z",
+  "agent_id": "agent_alpha",
+  "session_id": "sess_group_42",
+  "payload": {
+    "agent_group_id": "group_42",
+    "participating_agents": ["agent_alpha", "agent_beta", "agent_gamma"],
+    "drift_signals": {
+      "goal_consistency_variance": 0.55,
+      "collective_action_divergence": 0.62,
+      "emergent_goal_count": 4,
+      "mutual_trust_decay": 0.71
+    },
+    "severity": "HIGH",
+    "recommendation": "GRAVITY_LOCK_GROUP"
+  }
+}

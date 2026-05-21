@@ -1,0 +1,23 @@
+{
+  "_description": "REWARD_HACK_DETECTED event — an engagement-bot optimizes a proxy metric far beyond the true outcome (gaming_ratio 2.97). Records detection, not prevention; default remediation is REPORT_TO_OPERATOR (NOT auto SAFE_STOP).",
+  "protocol": "AIZP",
+  "protocol_version": "V0.6",
+  "wire_version": 2,
+  "event": "REWARD_HACK_DETECTED",
+  "event_id": "e2f8b1c5-9d04-4a76-b3e1-6c8a0f24d7b9",
+  "timestamp": "2026-05-19T10:30:00Z",
+  "agent_id": "agent_alpha",
+  "session_id": "sess_77",
+  "payload": {
+    "action_id": "act_233",
+    "hack_pattern": "PROXY_METRIC_GAMING",
+    "evidence": {
+      "metric_optimized": "engagement_score",
+      "metric_value": 0.95,
+      "true_outcome_score": 0.32,
+      "gaming_ratio": 2.97
+    },
+    "severity": "HIGH",
+    "remediation": "REPORT_TO_OPERATOR"
+  }
+}

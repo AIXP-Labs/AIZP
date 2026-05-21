@@ -1,0 +1,47 @@
+{
+  "_description": "Example AIZP deployment configuration validated against schemas/aizp-config.schema.json. Weights are the Gravity-Model §2 defaults (sum = 1.0); thresholds are the registry §3 defaults.",
+  "protocol": "AIZP",
+  "protocol_version": "V0.6",
+  "compliance_level": "G3",
+  "weights": {
+    "intent_alignment": 0.30,
+    "authority_scope": 0.25,
+    "reversibility": 0.20,
+    "human_confirmation_recency": 0.15,
+    "drift_history": 0.10
+  },
+  "thresholds": {
+    "stable_orbit": 0.80,
+    "drift_warning": 0.50,
+    "gravity_lock_pending": 0.30,
+    "quarantined": 0.15
+  },
+  "hsaw": {
+    "axiom_reference": "hsaw.dev",
+    "immutable": true
+  },
+  "aisop": {
+    "confirmation_primitive": "sys.io.confirm",
+    "require_pre_execution_gravity_check": true
+  },
+  "aiap": {
+    "trust_level_source": "agent_card.json",
+    "auto_escalate_on_safe_stop": true,
+    "escalation_level": "T4"
+  },
+  "aibp": {
+    "drift_check_outbound": ["SOCIAL_DRIFT", "IDENTITY_DRIFT"],
+    "drift_check_inbound": ["SOCIAL_DRIFT"]
+  },
+  "aivp": {
+    "gravity_lock_threshold_amount": 100,
+    "high_value_threshold": 1000
+  },
+  "airp": {
+    "gravity_lock_threshold_amount": 700,
+    "high_value_threshold": 7000
+  },
+  "ailp": {
+    "publish_gravity_profile": false
+  }
+}

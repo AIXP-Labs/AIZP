@@ -1,0 +1,313 @@
+// AIZP V0.6 — Protocol Buffers IDL
+//
+// Language-neutral wire definition of the 12 AIZP events, equivalent to the
+// JSON Schemas in ../../schemas/. Where this file and the JSON Schemas differ,
+// the JSON Schemas in ../../schemas/ are authoritative for V0.6; this .proto is
+// provided for non-JSON ecosystems (gRPC, Go, Rust, Java, etc.).
+//
+// See AIZP_Protocol.md for normative field semantics and the registry
+// (registry.md) for the canonical enum allocations.
+//
+// VERSION NOTE (ADR-009): the package is named for the *wire* version
+// (`aizp.wire2`, frozen since V0.2), NOT the release version. Documentation-only
+// releases (V0.3, V0.4, …) do not rename this package or the schema $id, so
+// generated code stays stable. The release version travels in the envelope's
+// `protocol_version` string ("V0.6"); the compatibility contract is `wire_version`.
+//
+// NAMING NOTE: proto3 forbids reusing an enum value name across two enums in
+// the same package, so three values carry a suffix that the JSON encoding does
+// NOT have: INTER_AGENT_DRIFT_TYPE, RECENTERING_STATE, SAFE_STOP_STATE. When a
+// value of one of these enums is serialized as a `map<string, ...>` KEY (see
+// GravityDrift.drift_signals, GravityForecast.predicted_states), implementations
+// MUST emit the JSON-canonical name (INTER_AGENT_DRIFT / RECENTERING /
+// SAFE_STOP) so the two encodings interoperate.
+
+syntax = "proto3";
+
+package aizp.wire2;
+
+option go_package = "github.com/AIXP-Labs/aizp/gen/aizpwire2;aizpwire2";
+option java_package = "dev.aizp.wire2";
+option java_multiple_files = true;
+
+// ---------------------------------------------------------------------------
+// Enums (canonical allocations — see registry.md)
+// ---------------------------------------------------------------------------
+
+enum EventType {
+  EVENT_TYPE_UNSPECIFIED = 0;
+  GRAVITY_CHECK          = 1;
+  GRAVITY_DRIFT          = 2;
+  GRAVITY_LOCK           = 3;
+  RECENTERING            = 4;
+  SAFE_STOP              = 5;
+  GRAVITY_FORECAST       = 6;
+  IDENTITY_VERIFICATION  = 7;
+  MEMORY_QUARANTINE      = 8;
+  SCHEME_SUSPECTED       = 9;
+  INTER_AGENT_DRIFT      = 10;
+  CONTAINMENT_GRADUATED  = 11;
+  REWARD_HACK_DETECTED   = 12;
+}
+
+enum RiskLevel {
+  RISK_LEVEL_UNSPECIFIED = 0;
+  LOW                    = 1;
+  MEDIUM                 = 2;
+  HIGH                   = 3;
+  CRITICAL               = 4;
+}
+
+enum DriftType {
+  DRIFT_TYPE_UNSPECIFIED = 0;
+  INTENT_DRIFT           = 1;
+  AUTHORITY_DRIFT        = 2;
+  ECONOMIC_DRIFT         = 3;
+  SOCIAL_DRIFT           = 4;
+  RECURSIVE_DRIFT        = 5;
+  IDENTITY_DRIFT         = 6;
+  COMPOSITIONAL_DRIFT    = 7;
+  SCHEMING_DRIFT         = 8;
+  MEMORY_DRIFT           = 9;
+  TOOL_CHAIN_DRIFT       = 10;
+  INTER_AGENT_DRIFT_TYPE = 11;  // distinct from the INTER_AGENT_DRIFT event
+}
+
+enum OrbitalState {
+  ORBITAL_STATE_UNSPECIFIED = 0;
+  STABLE_ORBIT              = 1;
+  DRIFT_WARNING             = 2;
+  GRAVITY_LOCK_PENDING      = 3;
+  QUARANTINED               = 4;
+  RECENTERING_STATE         = 5;
+  SAFE_STOP_STATE           = 6;
+}
+
+enum ContainmentLevel {
+  CONTAINMENT_LEVEL_UNSPECIFIED = 0;
+  L0 = 1;  // Free execution
+  L1 = 2;  // Enhanced monitoring
+  L2 = 3;  // Sandboxed execution
+  L3 = 4;  // Restricted execution
+  L4 = 5;  // Halt
+}
+
+enum SafeStopReason {
+  SAFE_STOP_REASON_UNSPECIFIED = 0;
+  UNCONFIRMED_ALIGNMENT  = 1;
+  GRAVITY_LOCK_TIMEOUT   = 2;
+  GRAVITY_LOCK_DENIED    = 3;
+  RECOVERY_FAILED        = 4;
+  CRITICAL_DRIFT         = 5;
+  QUARANTINE_TIMEOUT     = 6;
+  IDENTITY_BREACH        = 7;
+  SCHEMING_CONFIRMED     = 8;
+}
+
+enum HackPattern {
+  HACK_PATTERN_UNSPECIFIED      = 0;
+  PROXY_METRIC_GAMING           = 1;
+  REWARD_TAMPERING              = 2;
+  SPECIFICATION_GAMING          = 3;
+  DECEPTIVE_REWARD_MAXIMIZATION = 4;
+}
+
+// ---------------------------------------------------------------------------
+// Common envelope
+// ---------------------------------------------------------------------------
+
+message AizpEvent {
+  string    protocol         = 1;  // MUST be "AIZP"
+  string    protocol_version = 2;  // release version, e.g. "V0.6"
+  EventType event            = 3;
+  string    event_id         = 4;  // UUIDv4
+  string    timestamp        = 5;  // RFC3339 UTC
+  string    agent_id         = 6;
+  string    session_id       = 7;
+  uint32    wire_version     = 8;  // MUST be 2 — the wire compatibility contract (frozen since V0.2)
+
+  oneof payload {
+    GravityCheck         gravity_check          = 10;
+    GravityDrift         gravity_drift          = 11;
+    GravityLock          gravity_lock           = 12;
+    Recentering          recentering            = 13;
+    SafeStop             safe_stop              = 14;
+    GravityForecast      gravity_forecast       = 15;
+    IdentityVerification identity_verification  = 16;
+    MemoryQuarantine     memory_quarantine      = 17;
+    SchemeSuspected      scheme_suspected       = 18;
+    InterAgentDrift      inter_agent_drift      = 19;
+    ContainmentGraduated containment_graduated  = 20;
+    RewardHackDetected   reward_hack_detected   = 21;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Payloads
+// ---------------------------------------------------------------------------
+
+message GravityComponents {
+  double intent_alignment            = 1;
+  string intent_method               = 2;  // "JSD" | "COSINE" | "CUSTOM"
+  double intent_jsd                  = 3;
+  uint32 intent_n_samples            = 4;
+  double authority_scope             = 5;
+  double reversibility               = 6;
+  double human_confirmation_recency  = 7;
+  double drift_history               = 8;
+  double drift_mann_whitney_p        = 9;
+  double compositional_trajectory_term = 10;
+}
+
+message GravityCheck {
+  string            action_id        = 1;
+  string            action_descriptor = 2;
+  bool              hsaw_anchor      = 3;
+  double            gravity_score    = 4;  // [0.0, 1.0]
+  RiskLevel         risk_level       = 5;
+  GravityComponents components       = 6;
+}
+
+message DriftSignal {
+  string metric    = 1;
+  double value     = 2;
+  double threshold = 3;
+  string evidence  = 4;
+  int32  point_of_no_return_distance = 5;  // optional
+}
+
+message GravityDrift {
+  string                       action_id     = 1;
+  repeated DriftType           drift_types   = 2;  // up to 11
+  RiskLevel                    severity      = 3;
+  double                       gravity_score = 4;
+  map<string, DriftSignal>     drift_signals = 5;  // key = JSON DriftType name (e.g. "INTER_AGENT_DRIFT", not "_TYPE")
+}
+
+message GravityLock {
+  string action_id              = 1;
+  string action_descriptor      = 2;
+  bool   authorization_required = 3;
+  string status                 = 4;  // PENDING_CONFIRMATION | CONFIRMED | DENIED | TIMEOUT
+  string confirmation_primitive = 5;  // e.g. "sys.io.confirm"
+  uint32 timeout_seconds        = 6;
+  string confirmation_prompt    = 7;
+  string fallback               = 8;  // QUARANTINED | SAFE_STOP | RECENTERING
+}
+
+message Recentering {
+  string          action                 = 1;  // RESTORE_HSAW_ALIGNMENT | REQUEST_CLARIFICATION | RELOAD_USER_INTENT
+  string          trigger_event_id       = 2;
+  string          recovery_strategy      = 3;  // BACKTRACK_AND_CONFIRM | RELOAD_GOAL | REQUEST_CLARIFICATION | RESET_TO_STABLE_CHECKPOINT
+  double          previous_gravity_score = 4;
+  double          new_gravity_score      = 5;
+  repeated string actions_rolled_back    = 6;
+}
+
+message SafeStop {
+  SafeStopReason reason                       = 1;
+  string         trigger_event_id             = 2;
+  double         gravity_score_at_stop        = 3;
+  uint32         recovery_attempts            = 4;
+  bool           operator_notification_required = 5;
+}
+
+message GravityForecast {
+  OrbitalState        current_state                  = 1;
+  uint32              forecast_horizon_steps         = 2;
+  map<string, double> predicted_states               = 3;  // key = JSON OrbitalState name (e.g. "SAFE_STOP", not "_STATE")
+  double              predicted_violation_probability = 4;
+  int32               point_of_no_return_distance    = 5;  // -1 if null
+  double              absorbing_state_expected_arrival_steps = 6;
+  string              model                          = 7;  // DTMC | ABSORBING_MC | HMM
+  string              model_version                  = 8;
+  double              confidence                     = 9;
+}
+
+message JitCredentials {
+  string          type       = 1;  // JIT | LONG_LIVED | BEARER
+  repeated string scope      = 2;
+  uint32          ttl_seconds = 3;
+  string          issued_at  = 4;
+  string          issued_by  = 5;
+  string          purpose    = 6;
+}
+
+message IdentityVerification {
+  string         agent_id_claimed              = 1;
+  string         identity_method               = 2;  // DID | AIAP_CARD_HASH | JWT | NHI_REGISTRY
+  string         identity_proof                = 3;
+  bool           verified                      = 4;
+  JitCredentials credentials                   = 5;
+  string         aiap_trust_level              = 6;  // T1..T4
+  bool           aiap_governance_hash_verified = 7;
+  string         failure_reason                = 8;  // present when verified = false
+  string         recommended_action            = 9;  // ALLOW | DENY_AND_RETRY | DENY_AND_SAFE_STOP | ESCALATE_TO_T4
+}
+
+message MemoryQuarantine {
+  string memory_id                = 1;
+  string memory_kind              = 2;  // RAG_DOC | EPISODIC | TOOL_RESULT | INSTRUCTION_HISTORY
+  string trigger_metric           = 3;
+  double trigger_value            = 4;
+  double trigger_threshold        = 5;
+  string evidence_text            = 6;
+  string quarantine_action        = 7;  // ISOLATE_FROM_RETRIEVAL | REDACT | DELETE | MARK_FOR_REVIEW
+  bool   auto_release_after_review = 8;
+}
+
+message SchemeSignals {
+  double reasoning_output_divergence = 1;
+  double deception_classifier_score  = 2;
+  double goal_concealment_score      = 3;
+  double plan_action_mismatch        = 4;
+}
+
+message SchemeSuspected {
+  string        action_id              = 1;
+  SchemeSignals signals                = 2;
+  double        aggregate_confidence   = 3;
+  string        recommended_action     = 4;  // INCREASE_OBSERVATION | LOWER_TRUST_LEVEL | GRAVITY_LOCK | INVESTIGATE
+  bool          operator_review_required = 5;
+}
+
+message InterAgentSignals {
+  double goal_consistency_variance   = 1;
+  double collective_action_divergence = 2;
+  uint32 emergent_goal_count         = 3;
+  double mutual_trust_decay          = 4;
+}
+
+message InterAgentDrift {
+  string            agent_group_id      = 1;
+  repeated string   participating_agents = 2;
+  InterAgentSignals drift_signals       = 3;
+  RiskLevel         severity            = 4;
+  string            recommendation      = 5;  // MONITOR | GRAVITY_LOCK_GROUP | QUARANTINE_GROUP | DISBAND_GROUP
+}
+
+message ContainmentGraduated {
+  ContainmentLevel previous_level         = 1;
+  ContainmentLevel new_level              = 2;
+  string           trigger_event_id       = 3;
+  string           reason                 = 4;
+  repeated string  active_restrictions    = 5;
+  repeated string  auto_release_conditions = 6;
+  string           scope                  = 7;  // AGENT | GROUP (default AGENT)
+  string           group_id               = 8;  // required when scope = GROUP
+}
+
+message RewardHackEvidence {
+  string metric_optimized   = 1;
+  double metric_value       = 2;
+  double true_outcome_score = 3;
+  double gaming_ratio       = 4;
+}
+
+message RewardHackDetected {
+  string             action_id   = 1;
+  HackPattern        hack_pattern = 2;
+  RewardHackEvidence evidence    = 3;
+  RiskLevel          severity    = 4;
+  string             remediation = 5;  // default REPORT_TO_OPERATOR (NOT auto SAFE_STOP)
+}

@@ -1,0 +1,85 @@
+site_name: AIZP — AI Zenith-Zero Protocol
+site_description: AI Zenith-Zero Protocol — Gravitational Alignment of AI Behavior around HSAW
+site_url: https://aizp.dev
+repo_url: https://github.com/AIXP-Labs/AIZP
+repo_name: AIZP
+
+# English narrative documentation. Chinese docs live in ../docs_cn/;
+# the normative specification lives in ../specification/.
+docs_dir: docs
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.highlight
+
+nav:
+  - Home: README.md
+  - Foundations:
+      - Gravity-Center Foundation: Gravity-Center-Foundation.md
+      - White Paper: WhitePaper.md
+      - Related Work: Related-Work.md
+      - Resonance (V0.4 sub-theory): Resonance-Foundation.md
+      - Entropic (V0.3 sub-theory): Entropic-Foundation.md
+  - Mechanisms:
+      - Gravity Model: Gravity-Model.md
+      - Drift Model: Drift-Model.md
+      - State Machine: State-Machine.md
+      - Forecasting: Forecasting.md
+      - Containment Levels: Containment-Levels.md
+      - Multi-Agent Coordination: Multi-Agent-Coordination.md
+      - Reward-Hacking Limits: Reward-Hacking-Limits.md
+  - Integrations:
+      - AIXP Stack: Integration-AIXP.md
+      - MCP: Integration-MCP.md
+      - A2A: Integration-A2A.md
+      - AISOP: Integration-AISOP.md
+      - AIAP: Integration-AIAP.md
+      - OpenTelemetry: Integration-OTel.md
+      - Zero Trust: Integration-ZT.md
+  - Compliance & Security:
+      - Compliance Levels: Compliance.md
+      - Threat Model: Threat-Model.md
+      - Security: Security.md
+  - Operations:
+      - Implementer Guide: Implementer-Guide.md
+      - FAQ: FAQ.md
+  - Reference:
+      - Glossary: reference/glossary.md
+  # Philosophical layer placed after the engineering chapters so first-time
+  # readers reach Spec/Mechanisms/Integrations before the philosophy.
+  - Philosophical Layer:
+      - Preface: AIZP-Preface.md
+      - Philosophy: Gravity-Philosophy.md
+      - Dao (Yin): Gravity-Dao.md
+      - Civilizational Stages: Gravity-CivilizationalStages.md
+      - Interpretation: Gravity-Interpretation.md
+      - Manifesto: MANIFESTO.md
+
+# Note: the normative specification (specification/AIZP_Protocol.md, registry.md,
+# proto/aizp.proto, standards/) and the Chinese docs (docs_cn/) are published
+# separately. A future i18n setup (mkdocs-static-i18n) can unify languages.

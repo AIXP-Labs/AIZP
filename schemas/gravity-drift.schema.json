@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aizp.dev/schemas/wire-2/gravity-drift.schema.json",
+  "title": "AIZP GRAVITY_DRIFT Event",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "event", "event_id", "timestamp", "agent_id", "session_id", "payload"],
+  "properties": {
+    "_description":     { "type": "string" },
+    "protocol":         { "type": "string", "const": "AIZP" },
+    "protocol_version": { "type": "string", "const": "V0.6" },
+    "wire_version":     { "type": "integer", "const": 2 },
+    "event":            { "type": "string", "const": "GRAVITY_DRIFT" },
+    "event_id":         { "type": "string", "format": "uuid" },
+    "timestamp":        { "type": "string", "format": "date-time" },
+    "agent_id":         { "type": "string", "minLength": 1 },
+    "session_id":       { "type": "string", "minLength": 1 },
+    "payload": {
+      "type": "object",
+      "required": ["action_id", "drift_types", "severity", "gravity_score"],
+      "properties": {
+        "action_id": { "type": "string", "minLength": 1 },
+        "drift_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "INTENT_DRIFT",
+              "AUTHORITY_DRIFT",
+              "ECONOMIC_DRIFT",
+              "SOCIAL_DRIFT",
+              "RECURSIVE_DRIFT",
+              "IDENTITY_DRIFT",
+              "COMPOSITIONAL_DRIFT",
+              "SCHEMING_DRIFT",
+              "MEMORY_DRIFT",
+              "TOOL_CHAIN_DRIFT",
+              "INTER_AGENT_DRIFT"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "severity":      { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+        "gravity_score": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "drift_signals": {
+          "type": "object",
+          "propertyNames": { "enum": ["INTENT_DRIFT", "AUTHORITY_DRIFT", "ECONOMIC_DRIFT", "SOCIAL_DRIFT", "RECURSIVE_DRIFT", "IDENTITY_DRIFT", "COMPOSITIONAL_DRIFT", "SCHEMING_DRIFT", "MEMORY_DRIFT", "TOOL_CHAIN_DRIFT", "INTER_AGENT_DRIFT"] },
+          "additionalProperties": {
+            "type": "object",
+            "required": ["metric", "value"],
+            "properties": {
+              "metric":    { "type": "string" },
+              "value":     { "type": "number" },
+              "threshold": { "type": "number" },
+              "evidence":  { "type": "string" },
+              "point_of_no_return_distance": { "type": "integer", "minimum": 1 }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

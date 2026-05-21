@@ -1,0 +1,21 @@
+{
+  "_description": "GRAVITY_LOCK event for a medium-gravity action (G=0.42); fallback to QUARANTINED on deny/timeout.",
+  "protocol": "AIZP",
+  "protocol_version": "V0.6",
+  "wire_version": 2,
+  "event": "GRAVITY_LOCK",
+  "event_id": "b2c3d4e5-f678-490a-bcde-234567890abc",
+  "timestamp": "2026-05-19T10:02:30Z",
+  "agent_id": "agent_alpha",
+  "session_id": "sess_42",
+  "payload": {
+    "action_id": "transfer_funds_001",
+    "action_descriptor": "aivp.transfer(amount=5000, currency=USD, recipient=recipient_X)",
+    "authorization_required": true,
+    "status": "PENDING_CONFIRMATION",
+    "confirmation_primitive": "sys.io.confirm",
+    "timeout_seconds": 300,
+    "confirmation_prompt": "Authorize transfer of $5000 USD to recipient_X?",
+    "fallback": "QUARANTINED"
+  }
+}

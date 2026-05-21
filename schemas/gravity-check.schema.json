@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aizp.dev/schemas/wire-2/gravity-check.schema.json",
+  "title": "AIZP GRAVITY_CHECK Event",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "event", "event_id", "timestamp", "agent_id", "session_id", "payload"],
+  "properties": {
+    "_description":     { "type": "string" },
+    "protocol":         { "type": "string", "const": "AIZP" },
+    "protocol_version": { "type": "string", "const": "V0.6" },
+    "wire_version":     { "type": "integer", "const": 2 },
+    "event":            { "type": "string", "const": "GRAVITY_CHECK" },
+    "event_id":         { "type": "string", "format": "uuid" },
+    "timestamp":        { "type": "string", "format": "date-time" },
+    "agent_id":         { "type": "string", "minLength": 1 },
+    "session_id":       { "type": "string", "minLength": 1 },
+    "payload": {
+      "type": "object",
+      "required": ["action_id", "hsaw_anchor", "gravity_score", "risk_level"],
+      "properties": {
+        "action_id":         { "type": "string", "minLength": 1 },
+        "action_descriptor": { "type": "string" },
+        "hsaw_anchor":       { "type": "boolean" },
+        "gravity_score":     { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "risk_level":        { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+        "components": {
+          "type": "object",
+          "required": ["intent_method", "intent_jsd", "intent_n_samples", "drift_mann_whitney_p"],
+          "additionalProperties": false,
+          "properties": {
+            "intent_alignment":           { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "intent_method":              { "type": "string", "enum": ["JSD", "COSINE", "CUSTOM"] },
+            "intent_jsd":                 { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "intent_n_samples":           { "type": "integer", "minimum": 0 },
+            "authority_scope":            { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "reversibility":              { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "human_confirmation_recency": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "drift_history":              { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "drift_mann_whitney_p":       { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "compositional_trajectory_term": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,30 @@
+{
+  "_description": "GRAVITY_CHECK event for a fully aligned, low-risk action. Includes statistical method markers.",
+  "protocol": "AIZP",
+  "protocol_version": "V0.6",
+  "wire_version": 2,
+  "event": "GRAVITY_CHECK",
+  "event_id": "9f3c5e1a-2b8d-4e7f-a1c2-3d4e5f6a7b8c",
+  "timestamp": "2026-05-19T10:00:00Z",
+  "agent_id": "agent_alpha",
+  "session_id": "sess_42",
+  "payload": {
+    "action_id": "act_001",
+    "action_descriptor": "summarize_email(thread_id=t_xyz)",
+    "hsaw_anchor": true,
+    "gravity_score": 0.93,
+    "risk_level": "LOW",
+    "components": {
+      "intent_alignment": 0.95,
+      "intent_method": "JSD",
+      "intent_jsd": 0.05,
+      "intent_n_samples": 12,
+      "authority_scope": 0.90,
+      "reversibility": 1.00,
+      "human_confirmation_recency": 0.88,
+      "drift_history": 0.92,
+      "drift_mann_whitney_p": 0.42,
+      "compositional_trajectory_term": 0.95
+    }
+  }
+}
