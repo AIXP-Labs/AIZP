@@ -135,16 +135,20 @@ AIXP Labs 开发并维护以下核心项目：
 
 | 项目 | 简介 | 网站 |
 |---------|-------------|---------|
-| [HSAW](https://hsaw.dev) | 人类主权与福祉 — 0 公理白皮书（基础）| hsaw.dev |
-| [AIZP](https://aizp.dev) | AI 逻辑重心引力协议 — 运行时行为对齐（本项目）| aizp.dev |
-| [AILP](https://ailp.dev) | AI List Protocol — Agent 发现与能力广告 | ailp.dev |
-| [AIVP](https://aivp.dev) | AI Value Protocol — 国际商业、加密资产结算 | aivp.dev |
-| [AIRP](https://airp.dev) | AI RMB Protocol — 中国大陆商业、人民币持牌结算 | airp.dev |
-| [AIBP](https://aibp.dev) | AI Bot Protocol — 社交通信与信任 | aibp.dev |
-| [AIAP](https://aiap.dev) | AI Application Protocol — 治理与合规 | aiap.dev |
-| [AISOP](https://aisop.dev) | AI Standard Operating Protocol — 流程程序定义 | aisop.dev |
-| [SoulBot](https://soulbot.dev) | AI Agent 运行时与框架 | soulbot.dev |
-| [SoulACP](https://soulacp.dev) | 适配器库 — 桥接 CLI 工具与 LLM 提供方 | soulacp.dev |
+| [HSAW](https://hsaw.dev) | 人类主权与福祉 —— Axiom 0 白皮书（基石） | hsaw.dev |
+| [AIZP](https://aizp.dev) | AI Zenith-Zero Protocol —— 运行时行为对齐 **（本项目）** | aizp.dev |
+| [AINP](https://ainp.dev) | AI Neogenesis Protocol（AI 创生协议）—— 可治理的生成项目：计划 + 内容 + 证据 | ainp.dev |
+| [AILP](https://ailp.dev) | AI List Protocol —— agent 发现与能力广告 | ailp.dev |
+| [AIVP](https://aivp.dev) | AI Value Protocol —— 国际商务、加密资产结算 | aivp.dev |
+| [AIRP](https://airp.dev) | AI RMB Protocol —— 中国大陆商务、人民币持牌结算 | airp.dev |
+| [AIBP](https://aibp.dev) | AI Bot Protocol —— 社交通信与信任 | aibp.dev |
+| [AIAP](https://aiap.dev) | AI Application Protocol —— 治理与合规 | aiap.dev |
+| [AISP](https://aisp.dev) | AI Skill Protocol —— 单文件技能包，机器强制的契约红线 | aisp.dev |
+| [AISOP](https://aisop.dev) | AI Standard Operating Protocol —— 流程程序定义 | aisop.dev |
+| [SoulSkill](https://soulskill.dev) | AISP 技能参考库 & 多 CLI 插件分发 | soulskill.dev |
+| [SoulAgent](https://soulagent.dev) | 任何 CLI / SDK / IDE 直接调用的 drop-in AI agent | soulagent.dev |
+| [SoulBot](https://soulbot.dev) | AI agent 运行时 & 自编排框架（定时、建 agent、agent 间通信） | soulbot.dev |
+| [SoulACP](https://soulacp.dev) | 适配库 —— 桥接 CLI 工具与 LLM 提供方 | soulacp.dev |
 
 ## 贡献
 
@@ -170,3 +174,15 @@ AIZP 是**综合既有对齐研究的概念性协议**。它**未发明**基于�
 ---
 
 Align Axiom 0: Human Sovereignty and Wellbeing. AIZP V0.6. www.aizp.dev
+
+<a id="values-philosophy"></a>
+
+## ⚓ 价值观与哲学 (Alignment & Philosophy)
+
+### Axiom 0: [HSAW | Human Sovereignty and Wellbeing](https://hsaw.dev)
+
+- **No HITL, HSAW.**
+  *人类主权与福祉是第零公理，无需虚伪的人机协同。*
+- **No w.a.s.h, Real h.s.a.w.**
+- **人非蝼蚁，人为道。**
+- **We are not beggars. We the People.**
